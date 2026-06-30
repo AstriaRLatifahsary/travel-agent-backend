@@ -27,22 +27,24 @@ export class AdminSchema extends BaseModel {
 }
 
 export class BannerSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'id', 'name', 'password', 'updatedAt', 'username'] as const
+  static $columns = ['createdAt', 'description', 'id', 'image', 'isActive', 'subtitle', 'title', 'updatedAt'] as const
   $columns = BannerSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column()
-  declare email: string
+  declare description: string | null
   @column({ isPrimary: true })
   declare id: number
   @column()
-  declare name: string
-  @column({ serializeAs: null })
-  declare password: string
+  declare image: string | null
+  @column()
+  declare isActive: boolean | null
+  @column()
+  declare subtitle: string | null
+  @column()
+  declare title: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
-  @column()
-  declare username: string
 }
 
 export class ReviewSchema extends BaseModel {

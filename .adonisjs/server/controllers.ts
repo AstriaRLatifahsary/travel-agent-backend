@@ -5,4 +5,7 @@
 
 export const controllers = {
   Auth: () => import('#controllers/auth_controller'),
+  Banners: () => import('#controllers/banners_controller'),
+  TravelPackages: () => import('#controllers/travel_packages_controller'),
+  Reviews: () => import('#controllers/reviews_controller'),
 }
