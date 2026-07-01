@@ -27,7 +27,7 @@ export class AdminSchema extends BaseModel {
 }
 
 export class BannerSchema extends BaseModel {
-  static $columns = ['createdAt', 'description', 'id', 'image', 'isActive', 'subtitle', 'title', 'updatedAt'] as const
+  static $columns = ['createdAt', 'description', 'id', 'image', 'isActive', 'subtitle', 'title', 'travelPackageId', 'updatedAt'] as const
   $columns = BannerSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
@@ -43,6 +43,8 @@ export class BannerSchema extends BaseModel {
   declare subtitle: string | null
   @column()
   declare title: string
+  @column()
+  declare travelPackageId: number | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
