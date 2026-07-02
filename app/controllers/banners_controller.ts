@@ -27,6 +27,7 @@ export default class BannersController {
       'subtitle',
       'image',
       'description',
+      'travel_package_id',
       'is_active',
     ])
 
@@ -53,6 +54,7 @@ export default class BannersController {
       'subtitle',
       'image',
       'description',
+      'travel_package_id',
       'is_active',
     ])
 
