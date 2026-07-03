@@ -15,6 +15,7 @@ export type ScannedRoutes = {
     'travel_packages.store': { paramsTuple?: []; params?: {} }
     'travel_packages.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'travel_packages.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'reviews.latest': { paramsTuple?: []; params?: {} }
     'reviews.index': { paramsTuple?: []; params?: {} }
     'reviews.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'reviews.store': { paramsTuple?: []; params?: {} }
@@ -26,6 +27,7 @@ export type ScannedRoutes = {
     'banners.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'travel_packages.index': { paramsTuple?: []; params?: {} }
     'travel_packages.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'reviews.latest': { paramsTuple?: []; params?: {} }
     'reviews.index': { paramsTuple?: []; params?: {} }
     'reviews.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
@@ -34,6 +36,7 @@ export type ScannedRoutes = {
     'banners.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'travel_packages.index': { paramsTuple?: []; params?: {} }
     'travel_packages.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'reviews.latest': { paramsTuple?: []; params?: {} }
     'reviews.index': { paramsTuple?: []; params?: {} }
     'reviews.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }

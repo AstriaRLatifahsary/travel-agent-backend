@@ -15,7 +15,6 @@ export default class extends BaseSchema {
       table.integer('quota').nullable()
       table.text('facilities').nullable()
       table.string('image').notNullable()
-      table.boolean('is_active').defaultTo(true)
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

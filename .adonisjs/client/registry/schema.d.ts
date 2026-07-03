@@ -139,6 +139,18 @@ export interface Registry {
       errorResponse: unknown
     }
   }
+  'reviews.latest': {
+    methods: ["GET","HEAD"]
+    pattern: '/reviews/latest'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
   'reviews.index': {
     methods: ["GET","HEAD"]
     pattern: '/admin/reviews'

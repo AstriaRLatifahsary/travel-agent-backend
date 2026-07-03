@@ -20,6 +20,7 @@ export interface ApiDefinition {
     destroy: typeof routes['travel_packages.destroy']
   }
   reviews: {
+    latest: typeof routes['reviews.latest']
     index: typeof routes['reviews.index']
     show: typeof routes['reviews.show']
     store: typeof routes['reviews.store']

@@ -1,45 +1,35 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import TravelPackage from '#models/travel_package'
-import Review from '#models/review'
 
 export default class TravelPackagesController {
   // GET /admin/travel-packages
   async index() {
     const packages =
-      await TravelPackage.all()
+      await TravelPackage
+        .query()
+        .preload('reviews')
 
-    const result = []
-
-    for (const pkg of packages) {
-      const reviews =
-        await Review.query().where(
-          'travel_package_id',
-          pkg.id
-        )
-
+    return packages.map((pkg) => {
       const count =
-        reviews.length
+        pkg.reviews.length
 
       const avg =
         count > 0
-          ? reviews.reduce(
+          ? pkg.reviews.reduce(
               (sum, review) =>
-                sum +
-                review.rating,
+                sum + review.rating,
               0
             ) / count
           : 0
 
-      result.push({
+      return {
         ...pkg.serialize(),
         rating: Number(
           avg.toFixed(1)
         ),
         reviewCount: count,
-      })
-    }
-
-    return result
+      }
+    })
   }
 
   // GET /admin/travel-packages/:id
@@ -48,9 +38,14 @@ export default class TravelPackagesController {
     response,
   }: HttpContext) {
     const travelPackage =
-      await TravelPackage.find(
-        params.id
-      )
+      await TravelPackage
+        .query()
+        .where(
+          'id',
+          params.id
+        )
+        .preload('reviews')
+        .first()
 
     if (!travelPackage) {
       return response.notFound({
@@ -59,7 +54,25 @@ export default class TravelPackagesController {
       })
     }
 
-    return travelPackage
+    const count =
+      travelPackage.reviews.length
+
+    const avg =
+      count > 0
+        ? travelPackage.reviews.reduce(
+            (sum, review) =>
+              sum + review.rating,
+            0
+          ) / count
+        : 0
+
+    return {
+      ...travelPackage.serialize(),
+      rating: Number(
+        avg.toFixed(1)
+      ),
+      reviewCount: count,
+    }
   }
 
   // POST /admin/travel-packages
@@ -76,7 +89,6 @@ export default class TravelPackagesController {
       'quota',
       'facilities',
       'image',
-      'is_active',
     ])
 
     const travelPackage =
@@ -118,7 +130,6 @@ export default class TravelPackagesController {
       'quota',
       'facilities',
       'image',
-      'is_active',
     ])
 
     travelPackage.merge(data)

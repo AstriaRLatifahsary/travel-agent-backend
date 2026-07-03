@@ -72,6 +72,12 @@ const routes = {
     tokens: [{"old":"/admin/travel-packages/:id","type":0,"val":"admin","end":""},{"old":"/admin/travel-packages/:id","type":0,"val":"travel-packages","end":""},{"old":"/admin/travel-packages/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['travel_packages.destroy']['types'],
   },
+  'reviews.latest': {
+    methods: ["GET","HEAD"],
+    pattern: '/reviews/latest',
+    tokens: [{"old":"/reviews/latest","type":0,"val":"reviews","end":""},{"old":"/reviews/latest","type":0,"val":"latest","end":""}],
+    types: placeholder as Registry['reviews.latest']['types'],
+  },
   'reviews.index': {
     methods: ["GET","HEAD"],
     pattern: '/admin/reviews',

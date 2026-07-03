@@ -9,12 +9,17 @@ export default class ReviewsController {
     return await Review.query().preload('travelPackage')
   }
 
+  // GET /reviews/latest
+  async latest() {
+    return await Review.query()
+      .preload('travelPackage')
+      .orderBy('id', 'desc')
+      .limit(3)
+  }
+
   // GET /admin/reviews/:id
   async show({ params, response }: HttpContext) {
-    const review = await Review.query()
-      .where('id', params.id)
-      .preload('travelPackage')
-      .first()
+    const review = await Review.query().where('id', params.id).preload('travelPackage').first()
 
     if (!review) {
       return response.notFound({

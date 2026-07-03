@@ -33,6 +33,7 @@ router.post('/admin/travel-packages', [TravelPackagesController, 'store'])
 router.put('/admin/travel-packages/:id', [TravelPackagesController, 'update'])
 router.delete('/admin/travel-packages/:id', [TravelPackagesController, 'destroy'])
 
+router.get('/reviews/latest', [ReviewsController, 'latest'])
 router.get('/admin/reviews', [ReviewsController, 'index'])
 router.get('/admin/reviews/:id', [ReviewsController, 'show'])
 router.post('/admin/reviews', [ReviewsController, 'store'])
