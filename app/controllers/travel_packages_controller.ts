@@ -1,5 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import TravelPackage from '#models/travel_package'
+import app from '@adonisjs/core/services/app'
+import crypto from 'node:crypto'
 
 export default class TravelPackagesController {
   // GET /admin/travel-packages
@@ -80,21 +82,58 @@ export default class TravelPackagesController {
     request,
     response,
   }: HttpContext) {
-    const data = request.only([
-      'title',
-      'destination',
-      'description',
-      'price',
-      'duration',
-      'quota',
-      'facilities',
-      'image',
-    ])
+    const image =
+      request.file('image', {
+        size: '10mb',
+        extnames: [
+          'jpg',
+          'jpeg',
+          'png',
+          'webp',
+        ],
+      }
+      )
+
+    let imagePath = ''
+
+    if (
+      image &&
+      image.isValid
+    ) {
+      const fileName =
+        `${crypto.randomUUID()}.${image.extname}`
+
+      await image.move(
+        app.makePath(
+          'public/uploads'
+        ),
+        {
+          name: fileName,
+        }
+      )
+
+      imagePath =
+        `uploads/${fileName}`
+    }
 
     const travelPackage =
-      await TravelPackage.create(
-        data
-      )
+      await TravelPackage.create({
+        title:
+          request.input('title'),
+        destination:
+          request.input('destination'),
+        description:
+          request.input('description'),
+        price:
+          request.input('price'),
+        duration:
+          request.input('duration'),
+        quota:
+          request.input('quota'),
+        facilities:
+          request.input('facilities'),
+        image: imagePath,
+      })
 
     return response.created({
       message:
@@ -121,18 +160,54 @@ export default class TravelPackagesController {
       })
     }
 
-    const data = request.only([
-      'title',
-      'destination',
-      'description',
-      'price',
-      'duration',
-      'quota',
-      'facilities',
-      'image',
-    ])
+    const image =
+      request.file('image', {
+        size: '10mb',
+        extnames: [
+          'jpg',
+          'jpeg',
+          'png',
+          'webp',
+        ],
+      }
+      )
 
-    travelPackage.merge(data)
+    if (
+      image &&
+      image.isValid
+    ) {
+      const fileName =
+       `${crypto.randomUUID()}.${image.extname}`
+
+      await image.move(
+        app.makePath(
+          'public/uploads'
+        ),
+        {
+          name: fileName,
+        }
+      )
+
+      travelPackage.image =
+        `uploads/${fileName}`
+    }
+
+    travelPackage.merge({
+      title:
+        request.input('title'),
+      destination:
+        request.input('destination'),
+      description:
+        request.input('description'),
+      price:
+        request.input('price'),
+      duration:
+        request.input('duration'),
+      quota:
+        request.input('quota'),
+      facilities:
+        request.input('facilities'),
+    })
 
     await travelPackage.save()
 

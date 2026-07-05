@@ -1,5 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Banner from '#models/banner'
+import app from '@adonisjs/core/services/app'
+import crypto from 'node:crypto'
 
 export default class BannersController {
   // GET /admin/banners
@@ -21,48 +23,140 @@ export default class BannersController {
   }
 
   // POST /admin/banners
-  async store({ request, response }: HttpContext) {
-    const data = request.only([
-      'title',
-      'subtitle',
-      'image',
-      'description',
-      'travel_package_id',
-      'is_active',
-    ])
+  async store({
+    request,
+    response,
+  }: HttpContext) {
+    const image =
+      request.file('image', {
+        size: '5mb',
+        extnames: [
+          'jpg',
+          'jpeg',
+          'png',
+          'webp',
+        ],
+      })
 
-    const banner = await Banner.create(data)
+    let imagePath = ''
+
+    if (
+      image &&
+      image.isValid
+    ) {
+      const fileName =
+        `${crypto.randomUUID()}.${image.extname}`
+
+      await image.move(
+        app.makePath(
+          'public/uploads'
+        ),
+        {
+          name: fileName,
+        }
+      )
+
+      imagePath =
+        `uploads/${fileName}`
+    }
+
+    const banner =
+      await Banner.create({
+        title:
+          request.input('title'),
+        subtitle:
+          request.input('subtitle'),
+        description:
+          request.input('description'),
+        travelPackageId:
+          request.input(
+            'travel_package_id'
+          ),
+        isActive:
+          request.input(
+            'is_active'
+          ),
+        image: imagePath,
+      })
 
     return response.created({
-      message: 'Banner berhasil ditambahkan',
+      message:
+        'Banner berhasil ditambahkan',
       data: banner,
     })
   }
 
   // PUT /admin/banners/:id
-  async update({ params, request, response }: HttpContext) {
-    const banner = await Banner.find(params.id)
+  async update({
+    params,
+    request,
+    response,
+  }: HttpContext) {
+    const banner =
+      await Banner.find(
+        params.id
+      )
 
     if (!banner) {
       return response.notFound({
-        message: 'Banner tidak ditemukan',
+        message:
+          'Banner tidak ditemukan',
       })
     }
 
-    const data = request.only([
-      'title',
-      'subtitle',
-      'image',
-      'description',
-      'travel_package_id',
-      'is_active',
-    ])
+    const image =
+      request.file('image', {
+        size: '5mb',
+        extnames: [
+          'jpg',
+          'jpeg',
+          'png',
+          'webp',
+        ],
+      })
 
-    banner.merge(data)
+    if (
+      image &&
+      image.isValid
+    ) {
+      const fileName =
+        `${crypto.randomUUID()}.${image.extname}`
+
+      await image.move(
+        app.makePath(
+          'public/uploads'
+        ),
+        {
+          name: fileName,
+        }
+      )
+
+      banner.image =
+        `uploads/${fileName}`
+    }
+
+    banner.merge({
+      title:
+        request.input('title'),
+      subtitle:
+        request.input('subtitle'),
+      description:
+        request.input('description'),
+      travelPackageId:
+        request.input(
+          'travel_package_id'
+        ),
+      isActive:
+        request.input(
+          'is_active'
+        ),
+    })
+
     await banner.save()
 
     return response.ok({
-      message: 'Banner berhasil diperbarui',
+      message:
+        'Banner berhasil diperbarui',
       data: banner,
     })
   }
